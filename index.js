@@ -16,7 +16,14 @@ document.addEventListener("DOMContentLoaded",() => {
             haz_szam: getValue("haz_szam")
         };
 
-        console.log(Data)
-        console.log("Form submitted!");
+        fetch("http://127.0.0.1:8080/submit", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: "Very Javascript"
+        }).then(response => {
+            console.log("Submitted!", response);
+        }).catch(error => {
+            console.error("Error:", error);
+        });
     });
 });
