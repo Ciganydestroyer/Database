@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded",() => {
         fetch("http://127.0.0.1:8080/submit", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: "Very Javascript"
+            body: JSON.stringify(Data)
         }).then(response => {
             console.log("Submitted!", response);
         }).catch(error => {
