@@ -25,5 +25,10 @@ document.addEventListener("DOMContentLoaded",() => {
         }).catch(error => {
             console.error("Error:", error);
         });
+
+        //TODO: Change the style accordingly and send a request back to delete it
+        fetch("./posts.json")
+            .then((response) => response.json())
+            .then((json) => console.log(json));
     });
 });
