@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded",() => {
-    document.getElementById("myForm").addEventListener("submit", function(event) {
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("myForm").addEventListener("submit", async function(event) {
         event.preventDefault();
 
         const getValue = id => document.getElementById(id).value;
@@ -16,19 +16,28 @@ document.addEventListener("DOMContentLoaded",() => {
             haz_szam: getValue("haz_szam")
         };
 
-        fetch("http://127.0.0.1:8080/submit", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(Data)
-        }).then(response => {
-            console.log("Submitted!", response);
-        }).catch(error => {
-            console.error("Error:", error);
-        });
+        try {
+            const submitResponse = await fetch("http://127.0.0.1:8080/submit", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(Data)
+            });
+            console.log("Submitted!", submitResponse);
 
-        //TODO: Change the style accordingly and send a request back to delete it
-        fetch("./posts.json")
-            .then((response) => response.json())
-            .then((json) => console.log(json));
+            const postsResponse = await fetch("../posts.json");
+            const postsJson = await postsResponse.json();
+            console.log(postsJson);
+            //TODO: Change the style accordingly
+
+            const DeleteResponse = await fetch("http://127.0.0.1:8080/submit", {
+                method: "POST",
+                headers: {"Content-Type": "text/plain"},
+                body: "DELETE"
+            });
+            console.log("Sent delete request", DeleteResponse);
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
     });
 });

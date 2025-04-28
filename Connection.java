@@ -39,8 +39,6 @@ public class Connection {
                     char[] body = new char[contentLength];
                     reader.read(body, 0, contentLength);
                     Map<String, String> map = getStringStringMap(body);
-                    //TODO: if body is "DELETE" Delete the file
-
 
                     //Cheks if any of the map is empty
                     String[] fields = {"vezeteknev", "keresztnev", "email", "szuletes", "telefon", "varos", "utca", "haz_szam"};
@@ -55,7 +53,7 @@ public class Connection {
                         }
                     }
 
-                    //TODO: If everything is right send it to the database (ALSO MAKE IT) Probs dont bother with file creation
+                    //TODO: If everything is right send it to the database (ALSO MAKE IT)
 
                     //Create a file and put the map inside of it
                     try {
@@ -63,6 +61,14 @@ public class Connection {
                         FileWriter fileWriter = new FileWriter("posts.json");
                         fileWriter.write(Arrays.toString(Empty));
                         fileWriter.close();
+                        if (Arrays.toString(body).equals("[D, E, L, E, T, E]")) {
+                            if (file.delete()) {
+                                System.out.println("File is deleted");
+                            }
+                            else {
+                                throw new IOException("The file hasn't been able to be deleted");
+                            }
+                        }
                     }
                     catch (IOException e) {
                         System.out.println("Some shit went wrong");
