@@ -27,7 +27,40 @@ document.addEventListener("DOMContentLoaded", () => {
             const postsResponse = await fetch("../posts.json");
             const postsJson = await postsResponse.json();
             console.log(postsJson);
-            //TODO: Change the style accordingly
+
+            for (let i = 0; i < postsJson.length; i++) {
+                if (postsJson[i] === "Wrong") {
+                    document.getElementById(`Invalid${i}`).innerHTML = "Hibás vagy Üres a rublika!"
+                    document.getElementById(`Invalid${i}`).style.color = "red"
+                    let Form;
+                    switch (i) {
+                        case 0:
+                            Form = document.getElementById("vezeteknev").style.border = "1px solid #ff0000"
+                            break;
+                        case 1:
+                            Form = document.getElementById("keresztnev").style.border = "1px solid #ff0000"
+                            break;
+                        case 2:
+                            Form = document.getElementById("email").style.border = "1px solid #ff0000"
+                            break;
+                        case 3:
+                            Form = document.getElementById("szuletes").style.border = "1px solid #ff0000"
+                            break;
+                        case 4:
+                            Form = document.getElementById("telefon").style.border = "1px solid #ff0000"
+                            break;
+                        case 6:
+                            Form = document.getElementById("varos").style.border = "1px solid #ff0000"
+                            break;
+                        case 7:
+                            Form = document.getElementById("utca").style.border = "1px solid #ff0000"
+                            break;
+                        case 8:
+                            Form = document.getElementById("haz_szam").style.border = "1px solid #ff0000"
+                            break;
+                    }
+                }
+            }
 
             const DeleteResponse = await fetch("http://127.0.0.1:8080/submit", {
                 method: "POST",

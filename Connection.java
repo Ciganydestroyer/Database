@@ -116,7 +116,8 @@ public class Connection {
             if (substring1 != 0 && substring2 != 0 && substring3 != 0 && substring4 != 0) {
                 map.put(
                         jsonBody.substring(substring1 + 1,substring2),
-                        jsonBody.substring(substring3 + 1,substring4));
+                        jsonBody.substring(substring3 + 1,substring4)
+                );
                 substring1 = 0;
                 substring2 = 0;
                 substring3 = 0;
