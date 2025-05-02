@@ -1,76 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("myForm").addEventListener("submit", async function(event) {
+    const form = document.getElementById("myForm");
+    const fieldIds = ["vezeteknev", "keresztnev", "email", "szuletes", "telefon", "egyeb", "varos", "utca", "haz_szam"];
+
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const getValue = id => document.getElementById(id).value;
-
-        const Data = {
-            vezeteknev: getValue("vezeteknev"),
-            keresztnev: getValue("keresztnev"),
-            email: getValue("email"),
-            szuletes: getValue("szuletes"),
-            telefon: getValue("telefon"),
-            egyeb: getValue("egyeb"),
-            varos: getValue("varos"),
-            utca: getValue("utca"),
-            haz_szam: getValue("haz_szam")
-        };
+        const data = Object.fromEntries(
+            fieldIds.map(id => [id, document.getElementById(id).value])
+        );
 
         try {
-            const submitResponse = await fetch("http://127.0.0.1:8080/submit", {
+            const submitRes = await fetch("http://127.0.0.1:8080/submit", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(Data)
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
             });
-            console.log("Submitted!", submitResponse);
+            console.log("Submitted!", submitRes);
 
-            const postsResponse = await fetch("../posts.json");
-            const postsJson = await postsResponse.json();
-            console.log(postsJson);
+            const postsRes = await fetch("../posts.json");
+            const posts = await postsRes.json();
+            console.log(posts);
 
-            for (let i = 0; i < postsJson.length; i++) {
-                if (postsJson[i] === "Wrong") {
-                    document.getElementById(`Invalid${i}`).innerHTML = "Hibás vagy Üres a rublika!"
-                    document.getElementById(`Invalid${i}`).style.color = "red"
-                    let Form;
-                    switch (i) {
-                        case 0:
-                            Form = document.getElementById("vezeteknev").style.border = "1px solid #ff0000"
-                            break;
-                        case 1:
-                            Form = document.getElementById("keresztnev").style.border = "1px solid #ff0000"
-                            break;
-                        case 2:
-                            Form = document.getElementById("email").style.border = "1px solid #ff0000"
-                            break;
-                        case 3:
-                            Form = document.getElementById("szuletes").style.border = "1px solid #ff0000"
-                            break;
-                        case 4:
-                            Form = document.getElementById("telefon").style.border = "1px solid #ff0000"
-                            break;
-                        case 6:
-                            Form = document.getElementById("varos").style.border = "1px solid #ff0000"
-                            break;
-                        case 7:
-                            Form = document.getElementById("utca").style.border = "1px solid #ff0000"
-                            break;
-                        case 8:
-                            Form = document.getElementById("haz_szam").style.border = "1px solid #ff0000"
-                            break;
+            posts.forEach((val, i) => {
+                if (val === "Wrong") {
+                    const invalid = document.getElementById(`Invalid${i}`);
+                    if (invalid) {
+                        invalid.innerHTML = "Hibás vagy Üres a rublika!";
+                        invalid.style.color = "red";
+                    }
+
+                    const fieldMap = [0, 1, 2, 3, 4, null, 6, 7, 8];
+                    const fieldIndex = fieldMap[i];
+                    if (fieldIndex !== null) {
+                        const input = document.getElementById(fieldIds[fieldIndex]);
+                        if (input) input.style.border = "1px solid #ff0000";
                     }
                 }
-            }
+            });
 
-            const DeleteResponse = await fetch("http://127.0.0.1:8080/submit", {
+            const deleteRes = await fetch("http://127.0.0.1:8080/submit", {
                 method: "POST",
-                headers: {"Content-Type": "text/plain"},
+                headers: { "Content-Type": "text/plain" },
                 body: "DELETE"
             });
-            console.log("Sent delete request", DeleteResponse);
+            console.log("Sent delete request", deleteRes);
 
-        } catch (error) {
-            console.error("Error:", error);
+        } catch (err) {
+            console.error("Error:", err);
         }
     });
 });
