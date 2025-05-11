@@ -48,5 +48,25 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (err) {
             console.error("Error:", err);
         }
+
+
+        const inputs = document.querySelectorAll('input:not([type="submit"])');
+
+        inputs.forEach((input, index) => {
+            const invalidMsg = document.getElementById(`Invalid${index}`);
+
+            input.addEventListener('click', () => {
+                input.style.border = '1px solid #ccc';
+                if (invalidMsg) invalidMsg.textContent = '';
+            });
+
+            input.addEventListener('blur', () => {
+                const isOptional = input.id === 'egyeb';
+                if (!isOptional && input.value.trim() === '') {
+                    input.style.border = '1px solid #ff0000';
+                    if (invalidMsg) invalidMsg.textContent = 'Hibás vagy Üres a rublika!';
+                }
+            });
+        });
     });
 });
