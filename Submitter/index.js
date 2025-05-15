@@ -45,28 +45,45 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             console.log("Sent delete request", deleteRes);
 
+            const inputs = document.querySelectorAll('input:not([type="submit"])');
+
+            inputs.forEach((input, index) => {
+                const invalidMsg = document.getElementById(`Invalid${index}`);
+
+                input.addEventListener('click', () => {
+                    input.style.border = '1px solid #ccc';
+                    if (invalidMsg) invalidMsg.textContent = '';
+                });
+
+                input.addEventListener('blur', () => {
+                    const isOptional = input.id === 'egyeb';
+                    if (!isOptional && input.value.trim() === '') {
+                        input.style.border = '1px solid #ff0000';
+                        if (invalidMsg) invalidMsg.textContent = 'Hibás vagy Üres a rublika!';
+                    }
+                });
+            });
+
         } catch (err) {
+            //TODO: If multiple errors come up make it all of them show up
             console.error("Error:", err);
-        }
-
-
-        const inputs = document.querySelectorAll('input:not([type="submit"])');
-
-        inputs.forEach((input, index) => {
-            const invalidMsg = document.getElementById(`Invalid${index}`);
-
-            input.addEventListener('click', () => {
-                input.style.border = '1px solid #ccc';
-                if (invalidMsg) invalidMsg.textContent = '';
-            });
-
-            input.addEventListener('blur', () => {
-                const isOptional = input.id === 'egyeb';
-                if (!isOptional && input.value.trim() === '') {
-                    input.style.border = '1px solid #ff0000';
-                    if (invalidMsg) invalidMsg.textContent = 'Hibás vagy Üres a rublika!';
+            const Error = document.getElementById("error");
+            document.getElementById("ErrMes").innerHTML = err;
+            Error.style.display = "block";
+            Error.animate([
+                {top: "-130px"},
+                {top: "8px"}
+            ],
+                {
+                    duration: 250,
+                    easing: "ease-out",
+                    fill: "forwards"
                 }
+            )
+
+            document.getElementById("closeBtn").addEventListener("click", function () {
+                document.getElementById("error").style.display = "none";
             });
-        });
+        }
     });
 });

@@ -106,3 +106,34 @@ input:focus {
 #submit:hover {
     background-color: #005fa3;
 }
+
+#error {
+    background: #c10f0f;
+    color: #ffffff;
+    padding: 40px;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    right: 0;
+    top: -130px;
+    width: 20rem;
+    margin-inline: auto;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 20px;
+    display: none;
+    pointer-events: auto;
+}
+
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    cursor: pointer;
+    font-size: 32px;
+    color: #aaa;
+}
+
+.close-btn:hover {
+    color: #000;
+}
