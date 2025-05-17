@@ -65,25 +65,28 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
         } catch (err) {
-            //TODO: If multiple errors come up make it all of them show up
             console.error("Error:", err);
-            const Error = document.getElementById("error");
-            document.getElementById("ErrMes").innerHTML = err;
-            Error.style.display = "block";
-            Error.animate([
-                {top: "-130px"},
-                {top: "8px"}
-            ],
-                {
-                    duration: 250,
-                    easing: "ease-out",
-                    fill: "forwards"
-                }
-            )
 
-            document.getElementById("closeBtn").addEventListener("click", function () {
-                document.getElementById("error").style.display = "none";
-            });
+            showError(err?.toString?.() || "Unknown error");
+
+            function showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.classList.add('error');
+
+                const closeBtn = document.createElement('span');
+                closeBtn.classList.add('close-btn');
+                closeBtn.innerHTML = '&times;';
+                closeBtn.onclick = () => errorDiv.remove();
+
+                const text = document.createElement('p');
+                text.classList.add('ErrMes');
+                text.textContent = message;
+
+                errorDiv.appendChild(closeBtn);
+                errorDiv.appendChild(text);
+
+                document.getElementById('errors').appendChild(errorDiv);
+            }
         }
     });
 });
